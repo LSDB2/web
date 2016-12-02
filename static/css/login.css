@@ -1,0 +1,26 @@
+       body {
+        background-image: url(../static/img/index.jpg);
+        background-position: 100px -90px;
+        background-size: 1000px 800px;
+        background-repeat: repeat;
+        }
+        button{
+        color:orange;
+        }
+        .login-register-container{
+        margin-left: 700px;
+        margin-top: 300px;
+        }
+        .active{
+        color: black;
+        }
+        .gua-block{
+        height: 3px;
+        width: 35px;
+        position: relative;
+        background-color: orange;
+        }
+        .login-register-bar{
+        margin:0px 30px;
+        color: rgb(236, 77, 27);
+        }

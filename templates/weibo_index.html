@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/css/weibo.css">
+    <link href="http://cdn.bootcss.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    <meta charset="UTF-8" >
+    <title>个人微博主页</title>
+</head>
+<body>
+    <div class="container">
+        <ul class="nav nav-tabs btn-large btn-block " role="tablist">
+            <li role="presentation" class="active"><a href="/weibo/{{ user.username }}/1">个人微博主页</a></li>
+            <li role="presentation"><a href="/weibo/all/1">大家说</a> </li>
+            <li role="presentation"><a href="/weibo/all/{{ user.username }}/1">我的所有微博</a></li>
+            <li role="presentation"><a href="/msg/{{ user.username }}">私信</a></li>
+            <li role="presentation"><a href="/logout">登出</a></li>
+            <li role="presentation"><a href={{ url_for('user.profile', username=user.username) }}>个人资料</a></li>
+            <div class="avatar"><a href={{ url_for('user.profile', username=user.username) }}><img src="{{ user.avatar }}"></a>
+                </div>
+        </ul>
+        <form action="/weibo/add" method="post">
+            <input name="user_id" value="{{ user.id }}" type="hidden">
+            <textarea name="content" style="height:50px;width:925px;" placeholder="发表新鲜事"></textarea>
+            <button class="btn btn-large btn-block btn-primary">发布</button>
+        </form>
+    {% if weibo_list|length > 0 %}
+        {% for weibo in weibo_list %}
+        <div class="row-fluid weibo-container">
+            <img src="{{ weibo.avatar }}">
+                {{ weibo.username }}:<span>{{ weibo.content }}</span><span class="time"> @{{ weibo.created_time }}</span>
+            <div class="weibo-c-l"><button class="id-comment" data-id="{{ weibo.id }}">评论({{ weibo.comment|length }})</button>
+              <form action={{url_for('weibo.like', weibo_id=weibo.id) }} method="post">
+                <button>赞({{ weibo.like|length }})</button>
+              </form>
+            </div>
+
+        <div id="id-div-comment-{{ weibo.id }}" class="comment-item comment-hide">
+                  {% for c in weibo.comment %}
+                    <div class="comment">
+                      <span >{{ c.content }}</span>
+                      <span >by:{{c.username}}</span>
+                        <img src="{{ weibo.avatar }}">
+                      <span class="comment_time">{{ c.created_time }}</span>
+
+                    </div>
+                  {% endfor %}
+                <form action={{url_for('weibo.addcomment', weibo_id=weibo.id) }} method="post">
+                    <input name="sign" value="1" type="hidden">
+                    <input name="user_id" value="{{ user.id }}" type="hidden">
+                    <input name="content" class="weibo-content" placeholder="评论">
+                    <button id="id-button-comment">哔哔两句</button>
+                </form>
+        </div>
+
+    </div>
+    {% endfor %}
+
+    <div class="page">
+        {% if  p_page > 1 %}
+            <a href="/weibo/{{ user }}/{{ p_page - 1}}">上一页</a>
+        {% elif p_page == 1 %}
+            <a>上一页</a>
+        {% endif %}
+        {% for p in page %}
+            <a href="/weibo/{{ user }}/{{ p }}">{{ p }}</a>
+        {% endfor %}
+        {% if  p_page < page|length %}
+            <a href="/weibo/{{ user }}/{{ p_page + 1}}">下一页</a>
+        {% elif p_page == page|length %}
+            <a>下一页</a>
+        {% endif %}
+        <br>
+    当前第{{ p_page }}页
+{% endif %}
+</div>
+<script>
+    $('.id-comment').on('click',function(){
+         var weiboId = $(this).data('id')
+         var selector = '#id-div-comment-' + weiboId
+         var div = $(selector)
+         div.toggleClass('comment-hide')
+    })
+</script>
+</div>
+</body>
+</html>

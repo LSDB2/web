@@ -1,0 +1,36 @@
+        .comment-hide{
+        display: none;
+        }
+        .weibo-container{
+        margin:auto;
+        margin-top:2px;
+        margin-button:2px;
+        border:1px;
+        border-style: outset;
+        border-radius: 5px;
+        }
+        .weibo-c-l {
+        display: -webkit-inline-box;
+        float: right;
+        }
+        img{
+        width:50px;
+        height:50px;
+        }
+        .avatar{
+        display: inline;
+        float: right;
+        }
+        .comment{
+        margin:auto;
+        color: cornflowerblue;
+        background: azure;
+        border-style: ridge;
+        border-radius: 5px;
+        }
+        span{
+        margin:0 10px;
+        }
+        .comment_time{
+        float:right;
+        }

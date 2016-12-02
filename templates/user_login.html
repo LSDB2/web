@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册与登录</title>
+    <style>
+        body {
+        background-image: url(../static/img/index.jpg);
+        background-position: 100px -90px;
+        background-size: 1000px 800px;
+        background-repeat: repeat;
+        }
+        button{
+        color:orange;
+        }
+        .login-register-container{
+        margin-left: 700px;
+        margin-top: 300px;
+        }
+        .active{
+        color: black;
+        }
+        .gua-block{
+        height: 3px;
+        width: 35px;
+        position: relative;
+        background-color: orange;
+        }
+        .login-register-bar{
+        margin:0px 30px;
+        color: rgb(236, 77, 27);
+        }
+    </style>
+    <script
+          src="https://code.jquery.com/jquery-3.1.1.min.js"
+          integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+          crossorigin="anonymous">
+
+    </script>
+
+</head>
+<body>
+<div class="login-register-container">
+    <div class="login-register-bar">
+        <a id="id-a-signup" href="#">注册</a>
+        <a id="id-a-login" href="#">登录</a>
+        <div class="gua-block"></div>
+    </div>
+    <div id="id-div-signup">
+        <form action="/register" method="post">
+        <div class="gua-form-textinput">
+
+            <div class="gua-input-wrapper">
+                <input id="id-input-username" name="username" type="text" placeholder="用户名（不少于 2 位）" required/>
+            </div>
+            <div class="gua-input-wrapper">
+                <input id="id-input-password" name="password" type="text" placeholder="密码（不少于 2 位）" required/>
+            </div>
+         </div>
+        <button id="id-button-register" class="gua-button-big">注册</button>
+        </form>
+    </div>
+    <div id="id-div-login">
+        <form action="/login" method="post">
+        <div class="gua-form-textinput">
+            <div class="gua-input-wrapper">
+                <input id="id-input-login-username" name="username" type="text" placeholder="用户名" required/>
+            </div>
+            <div class="gua-input-wrapper">
+                <input id="id-input-login-password" name="password" type="text" placeholder="密码" required/>
+            </div>
+        </div>
+        <button id="id-button-login" class="gua-button-big" type="submit">进入</button>
+        </form>
+    </div>
+</div>
+<script>
+// setup
+var setup = function() {
+    // tab click
+    $('.login-register-bar > a').on('click', function () {
+        var self = $(this);
+        console.log('点击到了')
+        $('.active').removeClass('active');
+        self.addClass('active');
+    });
+// tab action
+var tabAction = function (position, showLogin) {
+    $(".gua-block").animate({
+        "left": position
+    }, "fast");
+    $('#id-div-login').toggle(showLogin);
+    $('#id-div-signup').toggle(!showLogin);
+};
+
+$('#id-a-signup').on('click', function() {
+    var position = '40px';
+    var showLogin = false;
+    tabAction(position, showLogin);
+});
+$('#id-a-login').on('click', function() {
+    var position = '0px';
+    var showLogin = true;
+    tabAction(position, showLogin);
+});
+};
+var __main = function() {
+    setup();
+    $('#id-a-login').click();
+};
+
+$(document).ready(function(){
+    __main();
+})
+</script>
+</body>
+</html>

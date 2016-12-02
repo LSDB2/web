@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/css/weibo.css">
+    <link href="http://cdn.bootcss.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>他人资料</title>
+</head>
+<body>
+ <div class="container">
+        <ul class="nav nav-tabs btn-large btn-block " role="tablist">
+            <li role="presentation"><a href="/weibo/{{ un.username }}/1">个人微博主页</a></li>
+            <li role="presentation"><a href="/weibo/all/1">大家说</a> </li>
+            <li role="presentation"><a href="/weibo/all/{{ un.username }}/1">我的所有微博</a></li>
+            <li role="presentation"><a href="/msg/{{ un.username }}">私信</a></li>
+            <li role="presentation"><a href="/logout">登出</a></li>
+            <li role="presentation" class="active"><a href={{ url_for('user.profile', username=un.username) }}>个人资料</a></li>
+
+            <div class="avatar">
+                <a href={{ url_for('user.profile', username=user.username) }}><img src="{{ un.avatar }}"></a>
+                </div>
+        </ul>
+    {% if msg == "关注" %}
+    <form action="/follow/{{ user.id }}" method="post">
+        <button>{{ msg }}</button>
+    </form>
+
+    {% elif msg == "已关注" %}
+    <form action="/unfollow/{{ user.id }}" method="post">
+        <button>{{ msg }}</button>
+    </form>
+    <form action="/msg/{{ user.id }}" method="post">
+        <input name="id" value="1" type="hidden">
+        <input name="content" placeholder="输入私信">
+        <button>发送</button>
+    </form>
+    {% endif %}
+
+
+用户名： {{ user.username }} <br>
+ID:{{ user.id }}<br>
+
+{% for w in weibo %}
+被赞： {{ w.like|length }}
+微博：{{w.content}}@{{ w.created_time }}<br>
+{% for cc in w.comment %}
+被评论：{{ cc.content }} by {{cc.username}}<br>
+{% endfor %}
+{% endfor %}
+
+{% for c in comment %}
+
+发出评论:{{ c.content }}@{{ c.created_time}} to {{ c.weibo.content }} belong to {{ c.weibo.username }}<br>
+{% endfor %}
+
+他的关注：<button>{{ follow | length }}</button>
+{% for f in follow %}
+{{ f.followed.username }}
+{% endfor %}
+
+
+被关注：<button>{{ followed | length }}</button>
+{% for fs in followed %}
+{{ fs.follower.username }}
+{% endfor %}
+</div>
+</body>
+</html>

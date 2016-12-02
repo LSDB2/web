@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/css/weibo.css">
+    <link href="http://cdn.bootcss.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>私信</title>
+</head>
+<body>
+<div class="container">
+        <ul class="nav nav-tabs btn-large btn-block " role="tablist">
+            <li role="presentation" ><a href="/weibo/{{ user.username }}/1">个人微博主页</a></li>
+            <li role="presentation"><a href="/weibo/all/1">大家说</a> </li>
+            <li role="presentation"><a href="/weibo/all/{{ user.username }}/1">我的所有微博</a></li>
+            <li role="presentation" class="active"><a href="/msg/{{ user.username }}">私信</a></li>
+            <li role="presentation"><a href="/logout">登出</a></li>
+            <li role="presentation"><a href={{ url_for('user.profile', username=user.username) }}>个人资料</a></li>
+            <div class="avatar"><a href={{ url_for('user.profile', username=user.username) }}><img src="{{ user.avatar }}"></a>
+                </div>
+        </ul>
+收到的私信：
+   {% for r in rec %}
+    <div>
+      收到: {{ r.content }} from {{ r.sender.username }} @ {{ r.time }}<br>
+        <form action="/msg/{{ r.sender_id }}" method="post">
+        <input name="id" value="2" type="hidden">
+        <input name="content" placeholder="回复">
+        <button>发送</button>
+        </form>
+    </div>
+   {% endfor %}
+<div>
+    发送的私信：
+    {% for s in send %}
+    <div>
+    {{ s.content }} from {{ s.sender.username }} to {{ s.receiver.username }} @ {{ s.time }}<br>
+    {% endfor %}
+    </div>
+</div>
+</div>
+</body>
+</html>

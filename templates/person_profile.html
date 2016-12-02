@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="/static/css/weibo.css">
+    <link href="http://cdn.bootcss.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>个人资料</title>
+</head>
+<body>
+    <div class="container">
+        <ul class="nav nav-tabs btn-large btn-block " role="tablist">
+            <li role="presentation"><a href="/weibo/{{ user.username }}/1">个人微博主页</a></li>
+            <li role="presentation"><a href="/weibo/all/1">大家说</a> </li>
+            <li role="presentation"><a href="/weibo/all/{{ user.username }}/1">我的所有微博</a></li>
+            <li role="presentation"><a href="/msg/{{ user.username }}">私信</a></li>
+            <li role="presentation"><a href="/logout">登出</a></li>
+            <li role="presentation" class="active"><a href={{ url_for('user.profile', username=user.username) }}>个人资料</a></li>
+
+            <div class="avatar">
+                <a href={{ url_for('user.profile', username=user.username) }}><img src="{{ user.avatar }}"></a>
+                </div>
+        </ul>
+        <h4>修改信息</h4>
+        <form action="/user/update/{{ user.id }}" method="post">
+        密码：<input name="password"  placeholder="请输入密码">
+        头像：<input name="avatar" placeholder="请输入url">
+            <button>确认修改</button>
+        </form>
+        {% for w in weibo %}
+        谁赞过我：  <button class="like">{{ w.like|length }}</button>
+                    {% if w.like|length >0 %}
+                    {% for like in w.like %}
+                    <img src="{{ like.avatar }}">
+                    <div class="comment">
+                        {{ like.username }}在<span>"{{ w.content }}"中</span>赞过我<span class="comment_time">@{{ w.created_time }}</span>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+        {% endfor %}
+        {% if comment|length >0 %}
+        我的评论:<button>{{ comment|length }}</button>
+        {% for c in comment %}
+        <div class="comment">
+        <span>{{ c.content }}</span> to <span>"{{ c.weibo.content }}"</span>by<span> {{ c.weibo.username }} <img src="{{ c.avatar }}">
+        </span><span class="comment_time">@{{ c.created_time}}</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+
+        我的关注：
+        {% if follow|length >0 %}
+        <button>{{ follow | length }}</button>
+        {% for f in follow %}
+        <h5>{{ f.followed.username }}</h5>
+        {% endfor %}
+        {% endif %}
+
+
+        谁关注我：
+        {% if followed|length > 0 %}
+        <button>{{ followed | length }}</button>
+        {% for fs in followed %}
+        <h5>{{ fs.follower.username }}</h5>
+        {% endfor %}
+        {% endif %}
+</div>
+</body>
+</html>
